@@ -1,3 +1,5 @@
+########333
+setwd()
 data = dat
 dim(data)
 data1 = subset(data, select = -c(3:11))
