@@ -66,7 +66,7 @@ plotLevels <- function(Hrs, level, lwd = 2, pch = 24, cex = 2,
     par(mar=c(5.1, 4.5, 6.0, 5.1))
   
 
-    if(add == TRUE){ par(new=TRUE); panel = NULL; main = "" }r
+    if(add == TRUE){ par(new=TRUE); panel = NULL; main = "" }
     plot(Hrs, level, type = "l", lwd = lwd, col = col, 
          yaxt = "n", xaxt = "n", ylab = "", xlab = "Hours",
          panel.first = panel)
