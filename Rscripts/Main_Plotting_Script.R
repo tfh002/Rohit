@@ -10,7 +10,7 @@ source("Rscripts/utils.R")
 ### Read in data ###
 
 
-#geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
+geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
 
 typeof(geneNames)
 
