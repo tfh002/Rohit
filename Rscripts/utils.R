@@ -2,6 +2,7 @@
 clean   <- function(x){ 
     imp2Prime      = (x == "IMP2'")
     res            = tolower(gsub("([^[:alnum:] ])", "", x))
+    res = trimws(res,which = "both")
     res[imp2Prime] = "imp2'"
     return(res)
 }

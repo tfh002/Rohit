@@ -1,6 +1,6 @@
 ### Manage directories
 #setwd("~/Thomas/12_timepoints")
-setwd("D:/Tang/Rohit")
+##setwd("D:/Tang/Rohit")
 inputDir = "InputData"
 plotDir  = "OutputPlots"        
 fileDir  = "OutputFiles"
@@ -12,7 +12,7 @@ source("Rscripts/utils.R")
 
 geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
 
-typeof(geneNames)
+#typeof(geneNames)
 
 
 
@@ -69,11 +69,14 @@ colnames(uniqPaths) = c("Gene", "Npathways", "Pathways")
 # Get GO IDs for each gene
 geneGO = aggregate(GoTerm~Gene, goYeast, function(x) 
   gsub("GO:", "", paste(x, collapse = "; ")))
+#There is a gene called 1-Oct in geneGo. Is that right?
+
 
 # Convert the GO obo file to R list
 #goLookUp = oboToList(goLookUp)
 
-
+# the whole combine and cleaning process is inefficiently done. Use dplyr and reshape packages to do this quickly and in readable way
+#
 
 # Combine the various data sources into one data frame
 dat = combine(tran, prot,      "ORF",     "ORF")
@@ -101,17 +104,22 @@ dat = dat[, c(1:(tExpColmns[1] - 1),
               (pExpColmns[length(Hrs)] + 1):ncol(dat), 
               tExpColmns, pExpColmns) ]
 
+# 5231 rows and 36 columns in dat
+
 # Remove columns not being used (for now)
 remCols = sapply(dat, function(x) 
   length(unique(x)))  == 1 | colnames(dat) %in% c("Npathways")
 dat     = dat[, !remCols]
+
+# 5231 rows and 36 columns in dat -- Only Npathways column was removed! Why is this done? what was the idea here?
+
 
 # Columns have been reordered so get expression columns again
 expColmns  = getExpColmns(dat)
 tExpColmns = expColmns$tExpColmns
 pExpColmns = expColmns$pExpColmns
 
-
+# dat needs to be cleaned up to include only relevant information and fewer NA's
 
 ## Make the plots
 
@@ -128,6 +136,9 @@ plotChoices(geneNames,  nr = 3, nc = 3,
             ylab2 = "Protein Levels", col2 = "green", 
             plotOnly = "both", 
             main = "", addToPrev = F, norm = T)
+
+
+# What is attempted here? No plot is generated
 
 # Plot selected genes on one chart
 plotChoicesMulti(geneNames,  nr = 1, nc = 1, 
@@ -153,7 +164,7 @@ tpDif2 = tpDif2[!is.na(tpDif2[,1]),]
 
 dev = apply(tpDif2,1,function(x) coef(lm(abs(x)~Hrs))[2])
 ord.dev = order(dev)
-difSum = difSum[ord.dev,]
+difSum = cbind(difSum[ord.dev,],dev)
 tpDif2 = tpDif2[ord.dev,]
 
 
@@ -168,9 +179,12 @@ for(i in 1:nrow(tpDif2)){
 }
 dev.off()
 
+# increasing slope means decoupling
 
+dat_inner = cbind(difSum,tpDif2)
 
-
+write.csv(dat, "dat file.csv", row.names = F)
+write.csv(dat_inner, "dat inner file.csv", row.names = F)
 
 
 

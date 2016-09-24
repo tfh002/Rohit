@@ -7,25 +7,36 @@ LSduplicates = LS[LS$Name %in%  duplicatesMatt,]
 
 write.csv(LSduplicates, "duplicated gene names in Matts RLS file.csv", row.names = F)
 LS2 = LS[!(LS$Name %in%  duplicatesMatt),]
-dat = combine(dat,LS2,"Feature", "Name")
-# add average column to the dat table
+LS3 = as.data.frame(sapply(LS2,toupper))
 
-avgRLS = matrix(nrow = nrow(dat), ncol = 1)
-for(i in 1:nrow(dat)){
-  avgRLS[i] = mean(as.numeric(strsplit(dat$RLS[i], ",")[[1]]))
+#dat = read.csv("dat file.csv", stringsAsFactors = F, header = T)
+dat_inner = read.csv("dat inner file.csv", stringsAsFactors = F, header = T)
+
+
+
+avgRLS = matrix(nrow = nrow(LS2), ncol = 1)
+for(i in 1:nrow(LS2)){
+  avgRLS[i] = mean(as.numeric(strsplit(LS2$RLS[i], ",")[[1]]))
 }
-dat$buds = avgRLS
+
+
+LS3$buds = avgRLS
+
+dat = merge(x = dat_inner,y = LS3,by.x = "Feature",by.y = "Name")
+
+
+
+#dat = combine(dat,LS2,"Feature", "Name")
+# add average column to the dat table
 
 dat = dat[order(dat$buds, decreasing = T),]
 rownames(dat) = 1:nrow(dat)
 
-dat[1:100,c("Feature", "buds")]
 
-#fix the NA's in dat
+#########################################
 
-MattRLS = dat[,c("Feature", "buds", "RLS")]
-head(MattRLS)
-dim(MattRLS)
+MattRLS = dat[,c("Feature", "buds", "RLS","Sum","dev")]
+MattRLS = MattRLS[order(MattRLS$dev,decreasing = F),]
 write.csv(MattRLS, "MattRLS3.csv", row.names = F)
 
 ######################################################################
