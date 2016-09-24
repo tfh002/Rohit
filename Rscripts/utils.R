@@ -1,5 +1,4 @@
 ### Helper Functions ###
-## checking
 clean   <- function(x){ 
     imp2Prime      = (x == "IMP2'")
     res            = tolower(gsub("([^[:alnum:] ])", "", x))
