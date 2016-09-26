@@ -10,7 +10,7 @@ source("Rscripts/utils.R")
 ### Read in data ###
 
 
-geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
+geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)
 
 #typeof(geneNames)
 
@@ -75,8 +75,6 @@ geneGO = aggregate(GoTerm~Gene, goYeast, function(x)
 # Convert the GO obo file to R list
 #goLookUp = oboToList(goLookUp)
 
-# the whole combine and cleaning process is inefficiently done. Use dplyr and reshape packages to do this quickly and in readable way
-#
 
 # Combine the various data sources into one data frame
 dat = combine(tran, prot,      "ORF",     "ORF")
