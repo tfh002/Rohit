@@ -62,32 +62,82 @@ Dat_pt = inner_join(x = prot_clean,y = tran_clean, by = c("ORF" = "ORF", "Age" =
          select(Feature,ORF,Age,ProtExp,TranExp,ProtTranRatio)%>%
          inner_join(y = LS_clean,by = c("Feature" = "Name"))%>%
          group_by(Feature)%>%
-         mutate(Slope = cor(Age,ProtTranRatio))%>%
+         mutate(Correlation = cor(Age,ProtTranRatio))%>%
          ungroup(Feature)%>%
-         mutate(GroupRank = ntile(Slope, 20))%>%
-         arrange(Slope,ORF,Age)
+         arrange(Correlation,ORF,Age)
+         
+
+# Calculating slope column
+#Dat_pts = Dat_pt%>%
+#          mutate(Slope = lm(ProtTranRatio ~ Age ,data = group_by(Dat_pt,Feature))$coeff[2])%>%
+#          mutate(Age = paste0("H",Age))%>%
+#          spread(key = Age,value = ProtTranRatio)
+#          mutate(GroupRank = ntile(Slope, 20))%>%
+#          arrange(Slope,ORF,Age)
+
+Dat_ptso = Dat_pt%>%
+  group_by(Feature)%>%
+  mutate(Slope = Correlation*sd(ProtTranRatio)/sd(Age))%>%
+  ungroup(Feature)%>%
+  mutate(Age = paste0("H",Age))%>%
+  select(-c(ProtExp,TranExp))%>%
+  spread(key = Age,value = ProtTranRatio)%>%
+  mutate(GroupRank = ntile(Slope, 20))
+
+Dat_ptc = Dat_pt%>%
+  mutate(Age = paste0("H",Age))%>%
+  select(-c(ProtExp,TranExp))%>%
+  spread(key = Age,value = ProtTranRatio)%>%
+  mutate(GroupRankCorrel = ntile(Correlation, 20))
+
 
 # Preparing data frame for plotting histogram
-Dat_hist = Dat_pt%>%
-           inner_join(y = life_clean,by = c("Feature" = "Name"))%>%
-           select(ORF,Feature,AvgLife,Slope,Age,ProtTranRatio,AntiProb)%>%
-           mutate(Age = paste0("H",Age))%>%
-           spread(key = Age,value = ProtTranRatio)
+Dat_hist_AG = Dat_ptso%>%
+              inner_join(y = life_clean,by = c("Feature" = "Name"))%>%
+              select(ORF,Feature,AvgLife,Slope,AntiProb)
+
+Dat_hist_s = Dat_ptso%>%
+          select(ORF,Feature,AvgLife,Slope)   
+
+Dat_hist_c = Dat_ptc%>%
+  select(ORF,Feature,AvgLife,Correlation) 
 
 # Plotting the histogram
-pdf(file = paste0(plotDir,"/Correlation Histogram.pdf"))
+pdf(file = paste0(plotDir,"/Prot Tran Slope Histogram split.pdf"))
 
-plot_hist <- ggplot(data = Dat_hist,mapping = aes(x = Slope))+
-             geom_histogram(fill = "blue", color = "black",bins = 20)+
-             labs(title = "Distribution of Age and Proteome/Transcriptome Correlation",
-                  xlab = "Correlation")+
-             facet_wrap(~ AntiProb)
+plot_hist_AG <- ggplot(data = Dat_hist_AG,mapping = aes(x = Slope))+
+             geom_histogram(fill ="green", color = "black",bins = 20)+
+             labs(title = "Distribution of Age and Proteome/Transcriptome Slopes (Anti Genes)",
+                  xlab = "Slope")+
+              facet_wrap(~AntiProb)
 
-print(plot_hist)
+print(plot_hist_AG)
+
+dev.off()
+
+pdf(file = paste0(plotDir,"/Prot Tran Slope Histogram (All).pdf"))
+
+plot_hist_s <- ggplot(data = Dat_hist_s,mapping = aes(x = Slope))+
+  geom_histogram(fill ="blue", color = "black",bins = 20)+
+  labs(title = "Distribution of Age and Proteome/Transcriptome Slopes ",
+       xlab = "Slope")
+
+print(plot_hist_s)
+dev.off()
+
+pdf(file = paste0(plotDir,"/Prot Tran Correl Histogram (All).pdf"))
+
+plot_hist_c <- ggplot(data = Dat_hist_c,mapping = aes(x = Correlation))+
+  geom_histogram(fill ="red", color = "black",bins = 20)+
+  labs(title = "Distribution of Age and Proteome/Transcriptome Correlations ",
+       xlab = "Correlation")
+
+print(plot_hist_c)
+
 dev.off()
 
 # Filtering histogram data for Anti Gene probability and cutting it into 5% groups
-Data_Anti = Dat_hist%>%
+Data_Anti = Dat_hist_AG%>%
             filter(AntiProb >= 0.5)%>%
             select(ORF,Feature,AvgLife,Slope,AntiProb)%>%
             ungroup(Feature)%>%
@@ -96,8 +146,9 @@ Data_Anti = Dat_hist%>%
 
 # Saving the data files
 write.csv(Data_Anti, paste0(outDir,"/Anti Gene Rank file.csv"), row.names = F)
-write.csv(Dat_hist, paste0(outDir, "/Histogram Data file.csv"), row.names = F)
-write.csv(Dat_pt, paste0(outDir, "/Proteomic Transcriptomic Data file.csv"), row.names = F)
+write.csv(Dat_hist_c, paste0(outDir, "/Correlation Histogram Data file.csv"), row.names = F)
+write.csv(Dat_hist_s, paste0(outDir, "/Slope Histogram Data file.csv"), row.names = F)
+write.csv(Dat_ptso, paste0(outDir, "/Proteomic Transcriptomic Data file.csv"), row.names = F)
 
 
           
