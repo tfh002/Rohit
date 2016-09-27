@@ -144,8 +144,8 @@ plotChoicesMulti(geneNames,  nr = 1, nc = 1,
 
 
 
-difSum = data.frame(Feature = dat2$Feature, stringsAsFactors = F)
-tpDif = t(apply(dat2[,tExpColmns], 1, normalize)) - t(apply(dat2[,pExpColmns], 1, normalize))
+difSum = data.frame(Feature = dat$Feature, stringsAsFactors = F)
+tpDif = t(apply(dat[,tExpColmns], 1, normalize)) - t(apply(dat[,pExpColmns], 1, normalize))
 
 difSum$Sum = rowSums(abs(tpDif))
 tpDif2 = tpDif[order(difSum$Sum),]
@@ -153,8 +153,6 @@ difSum = difSum[order(difSum$Sum),]
 difSum = difSum[!is.na(difSum$Sum),]
 tpDif2 = tpDif2[!is.na(tpDif2[,1]),]
 
-write.csv(dat2, "dat2.csv", row.names = F)
-getwd()
 dev = apply(tpDif2,1,function(x) coef(lm(abs(x)~Hrs))[2])
 ord.dev = order(dev)
 difSum = difSum[ord.dev,]
@@ -164,14 +162,17 @@ head(dev)
 difSum
 head(difSum)
 head(tpDif2)
-ead(difSum)
+head(difSum)
 dim(dev)
 length(dev)
+dat3
 
-dev
 
-pdf(paste0(plotDir, "/3rd ed Trans-Prot_abs5_Hist.pdf"), width = 12, height = 9)
-hist(dev, breaks = 20, col="yellow", xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
+
+
+
+pdf(paste0(plotDir, "/3rd ed Trans-Prot_abs4_Hist.pdf"), width = 12, height = 9)
+hist(dev, breaks = 20, col="brown", xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
 par(mfrow=c(3,3))
 for(i in 1:nrow(tpDif2)){
   plotLevels(Hrs, abs(tpDif2[i,]), main = c(difSum$Feature[i],"Trans-Prot Magnitude"), col="red")
@@ -180,8 +181,6 @@ for(i in 1:nrow(tpDif2)){
 }
 dev.off()
 
-tpDif2
-dev
 
 
 

@@ -67,6 +67,12 @@ Dat_pt = inner_join(x = prot_clean,y = tran_clean, by = c("ORF" = "ORF", "Age" =
          mutate(GroupRank = ntile(Slope, 20))%>%
          arrange(Slope,ORF,Age)
 
+
+Dat_pt_all_format = Dat_pt%>%
+  select(ORF,Feature,AvgLife,Slope,Age,ProtTranRatio,GroupRank)%>%
+  mutate(Age = paste0("H",Age))%>%
+  spread(key = Age,value = ProtTranRatio)
+
 # Preparing data frame for plotting histogram
 Dat_hist = Dat_pt%>%
            inner_join(y = life_clean,by = c("Feature" = "Name"))%>%
@@ -95,9 +101,13 @@ Data_Anti = Dat_hist%>%
             arrange(GroupRank)
 
 # Saving the data files
-write.csv(Data_Anti, paste0(outDir,"/Anti Gene Rank file.csv"), row.names = F)
-write.csv(Dat_hist, paste0(outDir, "/Histogram Data file.csv"), row.names = F)
-write.csv(Dat_pt, paste0(outDir, "/Proteomic Transcriptomic Data file.csv"), row.names = F)
-
+write.csv(Data_Anti, paste0(outDir,"/2nd ed Anti Gene Rank file.csv"), row.names = F)
+write.csv(Dat_hist, paste0(outDir, "/2nd ed Histogram Data file.csv"), row.names = F)
+write.csv(Dat_pt, paste0(outDir, "/2nd ed Proteomic Transcriptomic Data file.csv"), row.names = F)
+write.csv(Dat_pt_all_format, paste0(outDir, "/2nd ed PT Data file 691 genes.csv"), row.names = F)
+head(Dat_pt_all_format)
 
           
+Dat_pt[1:100,]
+head(Dat_pt_all_format)
+
