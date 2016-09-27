@@ -168,7 +168,7 @@ tpDif2 = tpDif2[ord.dev,]
 
 
 pdf(paste0(plotDir, "/Trans-Prot_abs4_Hist.pdf"), width = 12, height = 9)
-hist(dev, breaks = 20, col="brown", xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
+hist(dev, breaks = 20, col="brown", labels = TRUE,xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
 par(mfrow=c(3,3))
 for(i in 1:nrow(tpDif2)){
   plotLevels(Hrs, abs(tpDif2[i,]), main = c(difSum$Feature[i],"Trans-Prot Magnitude"), col="red")

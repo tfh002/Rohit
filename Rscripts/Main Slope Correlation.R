@@ -65,15 +65,6 @@ Dat_pt = inner_join(x = prot_clean,y = tran_clean, by = c("ORF" = "ORF", "Age" =
          mutate(Correlation = cor(Age,ProtTranRatio))%>%
          ungroup(Feature)%>%
          arrange(Correlation,ORF,Age)
-         
-
-# Calculating slope column
-#Dat_pts = Dat_pt%>%
-#          mutate(Slope = lm(ProtTranRatio ~ Age ,data = group_by(Dat_pt,Feature))$coeff[2])%>%
-#          mutate(Age = paste0("H",Age))%>%
-#          spread(key = Age,value = ProtTranRatio)
-#          mutate(GroupRank = ntile(Slope, 20))%>%
-#          arrange(Slope,ORF,Age)
 
 Dat_ptso = Dat_pt%>%
   group_by(Feature)%>%
@@ -107,9 +98,12 @@ pdf(file = paste0(plotDir,"/Prot Tran Slope Histogram split.pdf"))
 
 plot_hist_AG <- ggplot(data = Dat_hist_AG,mapping = aes(x = Slope))+
              geom_histogram(fill ="green", color = "black",bins = 20)+
+             stat_bin(bins=20,geom = "text", aes(label = ..count..),vjust = - 1.5)+
              labs(title = "Distribution of Age and Proteome/Transcriptome Slopes (Anti Genes)",
                   xlab = "Slope")+
-              facet_wrap(~AntiProb)
+             facet_wrap(~AntiProb)+
+             xlim(c(-0.15,0.15))+
+             ylim(c(0,120))
 
 print(plot_hist_AG)
 
@@ -118,9 +112,11 @@ dev.off()
 pdf(file = paste0(plotDir,"/Prot Tran Slope Histogram (All).pdf"))
 
 plot_hist_s <- ggplot(data = Dat_hist_s,mapping = aes(x = Slope))+
-  geom_histogram(fill ="blue", color = "black",bins = 20)+
-  labs(title = "Distribution of Age and Proteome/Transcriptome Slopes ",
-       xlab = "Slope")
+              geom_histogram(fill ="blue", color = "black",bins = 40)+
+              xlim(c(-0.2,0.2))+ylim(c(0,700))+
+              stat_bin(bins=40,geom = "text", aes(label = ..count..),vjust = - 1.5)+
+              labs(title = "Distribution of Age and Proteome/Transcriptome Slopes ",
+              xlab = "Slope")
 
 print(plot_hist_s)
 dev.off()
@@ -128,9 +124,11 @@ dev.off()
 pdf(file = paste0(plotDir,"/Prot Tran Correl Histogram (All).pdf"))
 
 plot_hist_c <- ggplot(data = Dat_hist_c,mapping = aes(x = Correlation))+
-  geom_histogram(fill ="red", color = "black",bins = 20)+
+  geom_histogram(bins=20,fill = "red",color = "black")+
+  stat_bin(bins=20,geom = "text", aes(label = ..count..),vjust = - 1.5)+
   labs(title = "Distribution of Age and Proteome/Transcriptome Correlations ",
        xlab = "Correlation")
+  
 
 print(plot_hist_c)
 
