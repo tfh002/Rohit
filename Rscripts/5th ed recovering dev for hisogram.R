@@ -158,17 +158,6 @@ ord.dev = order(dev)
 difSum = difSum[ord.dev,]
 tpDif2 = tpDif2[ord.dev,]
 
-head(dev)
-difSum
-head(difSum)
-head(tpDif2)
-head(difSum)
-dim(dev)
-length(dev)
-dat3
-
-
-
 
 
 pdf(paste0(plotDir, "/3rd ed Trans-Prot_abs4_Hist.pdf"), width = 12, height = 9)
