@@ -1,4 +1,5 @@
 ### Manage directories
+setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
 #setwd("~/Thomas/12_timepoints")
 inputDir = "InputData"
 plotDir  = "OutputPlots" 
@@ -68,7 +69,7 @@ geneGO = aggregate(GoTerm~Gene, goYeast, function(x)
   gsub("GO:", "", paste(x, collapse = "; ")))
 
 # Convert the GO obo file to R list
-goLookUp = oboToList(goLookUp)
+#goLookUp = oboToList(goLookUp)
 
 # Give RLS data colnames, remove duplicates (possibly combine duplicates later)
 # Also extract means as a summary stat (maybe do more with this later)
@@ -118,13 +119,16 @@ pExpColmns = expColmns$pExpColmns
 
 
 ## Make the plots
-
+###### This gets us the 674 genes for which we have all data. 
+geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) & 
+                        !is.na(dat[,pExpColmns[1]]) &
+                        !is.na(dat$RLSMean)]
 
 
 # Plot panels of selected genes
 plotChoices(geneNames,  nr = 3, nc = 3, 
             makePDF = T, PDFdim = c(12, 9), 
-            PDFname = "levels.pdf",  mult = 1, 
+            PDFname = "Levels_single.pdf",  mult = 1, 
             lwd = 2,                  cex = 2, 
             cex.main = 2, mar = c(5.1, 4.5, 6.0, 5.1), 
             cex.x.axis = 0.8,         cex.y.axis = 2, 
@@ -137,7 +141,7 @@ plotChoices(geneNames,  nr = 3, nc = 3,
 # Plot selected genes on one chart
 plotChoicesMulti(geneNames,  nr = 3, nc = 3, 
                  makePDF = T, PDFdim = c(12, 9), 
-                 PDFname = "levels2.pdf",  mult = 1, 
+                 PDFname = "Levels_multi.pdf",  mult = 1, 
                  lwd = 2,                  cex = 2, 
                  cex.main = 2, mar = c(5.1, 4.5, 6.0, 5.1), 
                  cex.x.axis = 0.8,         cex.y.axis = 2, 
@@ -147,7 +151,7 @@ plotChoicesMulti(geneNames,  nr = 3, nc = 3,
                  plotOnly = "tran", 
                  main = "Choices", addToPrev = F, norm = T, overTitle = "Overall Title")
 
-plotComplexColmn("Pathways", "; ", "Pathways.pdf")
+plotComplexColmn("Pathways", "; ", "Pathways674.pdf")
 
 #plotComplexColmn("GoTerm", "; ", "GoTerm.pdf")
 
