@@ -75,6 +75,14 @@ Dat_ptso = Dat_pt%>%
   spread(key = Age,value = ProtTranRatio)%>%
   mutate(GroupRank = ntile(Slope, 20))
 
+Dat_slope = Dat_pt%>%
+  group_by(Feature)%>%
+  do(mod = lm(ProtTranRatio~Age,data= .))%>%
+  mutate(Slope = coef(mod)[2])%>%
+  select(c(Feature,Slope))%>%
+  inner_join(y = LS_clean, by = c("Feature"="Name"))
+  
+
 Dat_ptc = Dat_pt%>%
   mutate(Age = paste0("H",Age))%>%
   select(-c(ProtExp,TranExp))%>%
@@ -133,6 +141,14 @@ plot_hist_c <- ggplot(data = Dat_hist_c,mapping = aes(x = Correlation))+
 print(plot_hist_c)
 
 dev.off()
+
+g<-ggplot(data = Dat_slope,mapping = aes(x = AvgLife,y = Slope))+
+   geom_point()+
+   geom_smooth(method = "lm",se = TRUE)+
+   ylim(c(-.15,.15))
+g
+
+summary(lm(Slope~AvgLife,Dat_slope))
 
 # Filtering histogram data for Anti Gene probability and cutting it into 5% groups
 Data_Anti = Dat_hist_AG%>%
