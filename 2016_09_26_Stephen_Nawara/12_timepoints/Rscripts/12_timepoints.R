@@ -133,6 +133,13 @@ geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) &
                           !is.na(dat[,pExpColmns[1]]) &
                           !is.na(dat$RLSMean)]
 
+# Sort by RLS mean
+dat = dat[order(dat$RLSMean, decreasing = T),]
+
+# Putting only 674 genes for which we have everything from geneNames into dat
+dat = dat[dat$Feature %in% geneNames,]
+
+
 
 # Plot panels of selected genes
 plotChoices(geneNames,  nr = 3, nc = 3, 
@@ -164,5 +171,5 @@ plotComplexColmn("Pathways", "; ", "Pathways674.pdf")
 
 #plotComplexColmn("GoTerm", "; ", "GoTerm.pdf")
 
-# Analysis: 
+# Finding the quantiles
 
