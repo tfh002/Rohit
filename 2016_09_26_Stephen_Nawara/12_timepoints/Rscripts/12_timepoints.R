@@ -138,6 +138,7 @@ dat = dat[order(dat$RLSMean, decreasing = T),]
 
 # Putting only 674 genes for which we have everything from geneNames into dat
 dat = dat[dat$Feature %in% geneNames,]
+rownames(dat) = 1:nrow(dat)
 
 
 
@@ -171,5 +172,22 @@ plotComplexColmn("Pathways", "; ", "Pathways674.pdf")
 
 #plotComplexColmn("GoTerm", "; ", "GoTerm.pdf")
 
-# Finding the quantiles
+# Getting proportions of genes in each pathway for each quantile of RLS
+Quants = quantile(dat$RLSMean, probs = 1 - c(0.05, 0.1, 0.2, 0.3))
 
+colmn = "Pathways"
+pattern = "; "
+uniqVals = unique(unlist(strsplit(dat[, colmn], pattern)))
+uniqVals = uniqVals[!is.na(uniqVals)]
+PathwayRLS = as.data.frame(matrix(nrow=length(uniqVals), ncol = 6), stringsAsFactors = F)
+colnames(PathwayRLS) = c("Pathway", "Genes", "95%", "90%", "80%", "70%")
+for(i in 1:length(uniqVals)){
+  sub = dat[grep(uniqVals[i], dat[, colmn]), ]
+  geneNames = sub$Feature
+  RLS = sub$RLSMean
+  Proport = sapply(Quants, function(x) length(which(RLS>x))/length(RLS))
+  PathwayRLS[i,] = c(uniqVals[i], paste(geneNames, collapse = ", "), Proport)
+}
+ToNum = grep("%", colnames(PathwayRLS))
+PathwayRLS[,ToNum] = sapply(PathwayRLS[,ToNum],as.numeric)
+write.csv(PathwayRLS, paste0(fileDir,"/PathwayRLS.csv"), row.names = F)
