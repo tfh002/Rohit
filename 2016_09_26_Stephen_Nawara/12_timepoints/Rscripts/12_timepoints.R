@@ -101,6 +101,15 @@ Hrs        = expColmns$Hrs
 remRows = apply(dat[, c(tExpColmns, pExpColmns)], 1, function(x) all(is.na(x)))
 dat     = dat[!remRows, ]
 
+# Calculate the slopes of divergence 
+dat$DivergenceSlopes = NA
+Divergence = t(abs(apply(dat[,tExpColmns], 1, normalize) - 
+                     apply(dat[,pExpColmns], 1, normalize)))
+NotNA = !is.na(Divergence[,1])
+dat$DivergenceSlopes[NotNA] = apply(Divergence[NotNA,], 1, 
+                                     function(x) coef(lm(x~Hrs))[2]) 
+
+
 # Reorder columns so that expression data is last
 dat = dat[, c(1:(tExpColmns[1] - 1), 
               (pExpColmns[length(Hrs)] + 1):ncol(dat), 
@@ -121,8 +130,8 @@ pExpColmns = expColmns$pExpColmns
 ## Make the plots
 ###### This gets us the 674 genes for which we have all data. 
 geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) & 
-                        !is.na(dat[,pExpColmns[1]]) &
-                        !is.na(dat$RLSMean)]
+                          !is.na(dat[,pExpColmns[1]]) &
+                          !is.na(dat$RLSMean)]
 
 
 # Plot panels of selected genes
@@ -155,78 +164,5 @@ plotComplexColmn("Pathways", "; ", "Pathways674.pdf")
 
 #plotComplexColmn("GoTerm", "; ", "GoTerm.pdf")
 
-# Analysis
+# Analysis: 
 
-dat2 = dat[!is.na(dat[,tExpColmns[1]]) & !is.na(dat[,pExpColmns[1]]) & !is.na(dat$RLSMean), ] 
-#dat2 = dat[!is.na(dat[,tExpColmns[1]]) & !is.na(dat[,pExpColmns[1]]),] 
-
-
-Sp = sapply(1:length(tExpColmns), function(i)
-  cor(dat2[,tExpColmns[i]],dat2[,pExpColmns[i]], method = "spearman"))
-
-plot(Hrs, Sp, ylim = c(0.6, 0.8))
-abline(h=c(0.75, 0.7, 0.73), lty=2)
-
-# Digitizing Janssens plot
-if(FALSE){
-  fName = paste0(inputDir, "/Janssens_uncoupling_correlation.png")
-  cal=ReadAndCal(fName)
-  pts = DigitData()
-  JanssenSp = Calibrate(pts, cal, x1=6, x2 = 72, y1 = 0.65, y2 = 0.8)
-  JanssenSp
-  JanssenSp$x = Hrs
-  JanssenSp
-  
-  Comp = cbind(JanssenSp, Sp)
-  colnames(Comp) = c("Hrs", "JanssenSp", "Sp")
-}
-
-
-dat2$CorSP = sapply(1:nrow(dat2), function(i)
-  cor(as.numeric(dat2[i,tExpColmns]), as.numeric(dat2[i,pExpColmns]), method = "spearman"))
-
-
-
-dat3 = dat2[order(dat2$CorSP, decreasing = T),]
-dim(dat3)
-rownames(dat3)= 1:nrow(dat3)
-head(dat3)
-plot(as.numeric(dat3$RLSMean), as.numeric(dat3$CorSP))
-head(dat3)
-dat3[1,]
-plot(dat3[1,tExpColmns], dat3[1, pExpColmns])
-dat3[1:5,]
-tail(dat3)
-dat4 = dat3[,c("Feature", "RLSMean", "CorSP")]
-colnames(dat3)
-head(dat4)
-
-plotGene(1)
-dim(dat4)
-dat3
-plotChoices("UBP1", nr=1, nc=1)
-tail(dat3)
-which.min(abs(dat3$CorSP))
-dat3$Feature[317]
-CorSP_0 = dat4[order(abs(dat3$CorSP)),]
-
-head(CorSP_0,100)
-mean(dat3$RLSMean)
-mean(dat3$RLSMean[1:100])
-mean(rev(dat3$RLSMean)[1:100])
-mean(CorSP_0$RLSMean[1:100])
-tail(dat4,100)
-head(dat4,100)
-head(dat3)
-
-head(dat3)
-dat3$Slopes = sapply(1:nrow(dat3), function(i)
-  coef(lm(as.numeric(abs(normalize(dat3[i,tExpColmns])-normalize(dat3[i,pExpColmns])))~Hrs))[2])
-head(dat3)
-dat3 = dat3[order(dat3$Slopes, decreasing = T),]
-head(dat3)
-require(rgl)
-plot3d(dat3$RLSMean, dat3$CorSP, dat3$Slopes)
-dat4
-head(dat4)
-dat4[dat4$RLSMean>30, ]
