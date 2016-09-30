@@ -164,5 +164,3 @@ write.csv(Dat_hist_c, paste0(outDir, "/Correlation Histogram Data file.csv"), ro
 write.csv(Dat_hist_s, paste0(outDir, "/Slope Histogram Data file.csv"), row.names = F)
 write.csv(Dat_ptso, paste0(outDir, "/Proteomic Transcriptomic Data file.csv"), row.names = F)
 
-
-          
