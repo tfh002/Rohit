@@ -106,7 +106,7 @@ plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
                      main = "", addToPrev = FALSE, norm = FALSE, 
                      plotDiff = T){
     if(main == ""){
-        main=c(paste(idx, dat$Feature[idx], sep = ": "), 
+        main=c(paste0(idx, "  -  ", dat$Feature[idx], "   RLS: ", round(dat$RLSMean[idx],2)),  
                dat$Feature.Systematic.Name[idx], dat$Feature.Type[idx])
     }
 
@@ -204,7 +204,7 @@ plotChoices <- function(geneNames,  nr = 3, nc = 3,
                  plotOnly = plotOnly, 
                  main = main, addToPrev = addToPrev, norm = norm)
     }
-    title(overTitle, outer = T)
+    title(overTitle, outer = T, cex.main=2.5, col.main= "purple" )
     if(makePDF){ dev.off() }
 }
 
