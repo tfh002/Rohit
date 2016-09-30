@@ -142,13 +142,6 @@ print(plot_hist_c)
 
 dev.off()
 
-g<-ggplot(data = Dat_slope,mapping = aes(x = AvgLife,y = Slope))+
-   geom_point()+
-   geom_smooth(method = "lm",se = TRUE)+
-   ylim(c(-.15,.15))
-g
-
-summary(lm(Slope~AvgLife,Dat_slope))
 
 # Filtering histogram data for Anti Gene probability and cutting it into 5% groups
 Data_Anti = Dat_hist_AG%>%
