@@ -46,7 +46,7 @@ for( i in GeneRank$gRowNum)
     geom_vline(aes(xintercept=Age_filter[8]), colour="blue", linetype="dashed", size =1)+
     ggtitle(paste(Dat_s$Feature[1],":",Dat_s$ORF[1])) + 
     ylab("Proteomic Transcriptomic Ratio") + 
-    theme_minimal() + 
+    theme_gdocs() + 
     theme(axis.title.x = element_text(face="bold", color="black",size=12)) + 
     theme(axis.title.y = element_text(face="bold", color="black",size=12))
 }
@@ -55,7 +55,7 @@ for( i in GeneRank$gRowNum)
 
 # Print the plots to a PDF file arranging them in 2x2 plots per page
 
-pdf(paste0(plotDir, "/", "GenePlots_Rohit.pdf")) 
+pdf(paste0(plotDir, "/", "GenePlotsNorm_Rohit.pdf")) 
 
 for( i in seq(0,length(p)-1,4))
 { grid.arrange(p[[i+1]],p[[i+2]],p[[i+3]],p[[i+4]], nrow =2, ncol=2, newpage = TRUE ) }
