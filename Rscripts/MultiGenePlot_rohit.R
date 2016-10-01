@@ -11,8 +11,8 @@ Age_filter <- unique(Dat_pt$Age)[order(unique(Dat_pt$Age))%in%seq(3,10,1)]
 
 # Creating the Gene Filter ranked by Average Life
 Gene_filtered <- Dat_pt%>%
-  filter(Age %in% Age_filter)%>%
-  filter(ProtTranRatio>1)%>%
+  #filter(Age %in% Age_filter)%>%
+  #filter(ProtTranRatio>1)%>%
   mutate(Age = paste0("H",Age))%>%
   select(-c(ProtExp,TranExp))%>%
   spread(key = Age,value = ProtTranRatio)%>%   # spread to order the set in avglife
@@ -28,7 +28,7 @@ GeneRank <- Gene_filtered%>%
 Dat_plot <- Dat_pt%>%
   filter(Feature %in% Gene_filtered$Feature)%>%
   inner_join(y = GeneRank, by = c("Feature" = "Feature"))%>%
-  select(c(gRowNum,Feature, ORF, Age,ProtExp,TranExp,ProtTranRatio))
+  select(c(gRowNum,Feature, ORF,AvgLife, Age,ProtExp,TranExp,ProtTranRatio))
 
 
 # Generate a list of plots for each gene
@@ -44,7 +44,7 @@ for( i in GeneRank$gRowNum)
     geom_hline(aes(yintercept=1), colour="red", linetype=1, size =2) +
     geom_vline(aes(xintercept=Age_filter[1]), colour="blue", linetype="dashed", size =1) +
     geom_vline(aes(xintercept=Age_filter[8]), colour="blue", linetype="dashed", size =1)+
-    ggtitle(paste(Dat_s$Feature[1],":",Dat_s$ORF[1])) + 
+    ggtitle(paste(Dat_s$Feature[1],":",Dat_s$ORF[1],":",round(Dat_s$AvgLife[1],2))) + 
     ylab("Proteomic Transcriptomic Ratio") + 
     theme_gdocs() + 
     theme(axis.title.x = element_text(face="bold", color="black",size=12)) + 
@@ -57,7 +57,7 @@ for( i in GeneRank$gRowNum)
 
 pdf(paste0(plotDir, "/", "GenePlotsNorm_Rohit.pdf")) 
 
-for( i in seq(0,length(p)-1,4))
+for( i in seq(0,length(p)-4,4))
 { grid.arrange(p[[i+1]],p[[i+2]],p[[i+3]],p[[i+4]], nrow =2, ncol=2, newpage = TRUE ) }
 
 dev.off()
