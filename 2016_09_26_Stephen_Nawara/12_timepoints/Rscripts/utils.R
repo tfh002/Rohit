@@ -36,10 +36,10 @@ combine <- function(df1, df2, idColmn1, idColmn2){
         tmp[, match(colnames(extras), colnames(res))]  = extras
 
         res = rbind(res, tmp)
-  }
+    }
 
-  rownames(res) = 1:nrow(res)
-  return(res)
+    rownames(res) = 1:nrow(res)
+    return(res)
 }
 
 getExpColmns <- function(dat){
@@ -93,7 +93,17 @@ plotLevels <- function(Hrs, level, lwd = 2, pch = 24, cex = 2, mult = 1,
 
 
 
-normalize <-function(x){ (x-min(x))/(max(x)-min(x)) }
+normalize <-function(x){ 
+    if(is.null(nrow(x))){
+        (x-min(x))/(max(x)-min(x)) 
+    }else{
+        t(apply(x, 1, function(r) (r-min(r))/(max(r)-min(r)) ))
+    }
+}
+
+
+
+
 
 
 plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
