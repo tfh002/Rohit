@@ -142,7 +142,6 @@ dat = dat[dat$Feature %in% geneNames,]
 rownames(dat) = 1:nrow(dat)
 
 
-
 # Plot panels of selected genes
 plotChoices(geneNames,  nr = 3, nc = 3, 
             makePDF = T, PDFdim = c(12, 9), 
