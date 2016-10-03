@@ -15,6 +15,7 @@ geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), str
 prot = read.csv(paste0(inputDir, "/Proteomic.csv"), stringsAsFactors=F)
 tran = read.csv(paste0(inputDir, "/Transcriptomic.csv"), stringsAsFactors=F)
 
+
 # Additional Info
 gene     = read.csv(paste0(inputDir, "/AllChr.csv"),  stringsAsFactors = F)
 path     = read.csv(paste0(inputDir, "/BiochemicalPathways.tab"),

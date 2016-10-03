@@ -109,7 +109,7 @@ plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
         main=c(paste0(idx, "  -  ", dat$Feature[idx], "   RLS: ", round(dat$RLSMean[idx],2)),  
                dat$Feature.Systematic.Name[idx], dat$Feature.Type[idx])
     }
-
+-
     tranLevels = dat[idx, tExpColmns]
     protLevels = dat[idx, pExpColmns]
 
@@ -309,3 +309,4 @@ plotComplexColmn <- function(colmn,  pattern,  PDFname = "Pathways.pdf"){
     }
     dev.off()
 }
+
