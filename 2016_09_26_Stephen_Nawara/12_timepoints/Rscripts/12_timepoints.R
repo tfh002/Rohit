@@ -153,7 +153,8 @@ plotChoices(geneNames,  nr = 3, nc = 3,
             ylab1 = "mRNA Levels",    col1 = "blue", 
             ylab2 = "Protein Levels", col2 = "green", 
             plotOnly = "both", 
-            main = "", addToPrev = F, norm = F,  overTitle = "Overal Title")
+            main = "", addToPrev = F, norm = F,  
+            overTitle = "Overall Title",  plotDiff = T, absDiff = T)
 
 # Plot selected genes on one chart
 plotChoicesMulti(geneNames,  nr = 3, nc = 3, 
