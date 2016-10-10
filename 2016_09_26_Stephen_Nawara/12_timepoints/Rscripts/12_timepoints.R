@@ -107,7 +107,7 @@ Divergence = t(abs(apply(dat[,tExpColmns], 1, normalize) -
                      apply(dat[,pExpColmns], 1, normalize)))
 NotNA = !is.na(Divergence[,1])
 dat$DivergenceSlopes[NotNA] = apply(Divergence[NotNA,], 1, 
-                                     function(x) coef(lm(x~Hrs))[2]) 
+                                    function(x) coef(lm(x~Hrs))[2]) 
 
 
 # Reorder columns so that expression data is last
@@ -191,3 +191,28 @@ for(i in 1:length(uniqVals)){
 ToNum = grep("%", colnames(PathwayRLS))
 PathwayRLS[,ToNum] = sapply(PathwayRLS[,ToNum],as.numeric)
 write.csv(PathwayRLS, paste0(fileDir,"/PathwayRLS.csv"), row.names = F)
+
+
+# Compare relatve expression
+
+p_grt_t = t(apply(dat[, tExpColmns], 1, normalize)) < t(apply(dat[, pExpColmns],1, normalize))
+any_p_grt_t = apply(p_grt_t[,3:10], 1, any)
+dat[which(!any_p_grt_t),]
+dat$Feature[which(!any_p_grt_t)]
+
+length(which(any_p_grt_t))
+
+
+p_grt_t = t(apply(dat[1:674, tExpColmns], 1, normalize)) < t(apply(dat[1:674, pExpColmns],1, normalize))
+any_p_grt_t = apply(p_grt_t[,3:10], 1, any)
+dat[which(!any_p_grt_t),]
+dat$Feature[which(!any_p_grt_t)]
+
+length(which(any_p_grt_t))
+plotChoices(dat$Feature[which(!any_p_grt_t)], makePDF = T, PDFname = "Not.pdf",
+            overTitle = "9 out of 136 where P never > T at TP 3 to 10")
+
+
+plotChoices(dat$Feature[which(any_p_grt_t)], makePDF = T, PDFname = "Opposite.pdf",
+            overTitle = "9 out of 136 where P never > T at TP 3 to 10")
+
