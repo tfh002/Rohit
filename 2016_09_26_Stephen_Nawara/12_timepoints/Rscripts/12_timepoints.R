@@ -1,6 +1,6 @@
 ### Manage directories
-setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
-#setwd("~/Thomas/12_timepoints")
+#setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
+setwd("C:/Users/Valued Customer/Documents/Thomas/Remote/2016_09_26_Stephen_Nawara/12_timepoints")
 inputDir = "InputData"
 plotDir  = "OutputPlots" 
 fileDir  = "OutputFiles"
@@ -14,6 +14,7 @@ geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), str
 # Main data
 prot = read.csv(paste0(inputDir, "/Proteomic.csv"), stringsAsFactors=F)
 tran = read.csv(paste0(inputDir, "/Transcriptomic.csv"), stringsAsFactors=F)
+
 
 # Additional Info
 gene     = read.csv(paste0(inputDir, "/AllChr.csv"),  stringsAsFactors = F)
@@ -141,7 +142,6 @@ dat = dat[dat$Feature %in% geneNames,]
 rownames(dat) = 1:nrow(dat)
 
 
-
 # Plot panels of selected genes
 plotChoices(geneNames,  nr = 3, nc = 3, 
             makePDF = T, PDFdim = c(12, 9), 
@@ -153,7 +153,8 @@ plotChoices(geneNames,  nr = 3, nc = 3,
             ylab1 = "mRNA Levels",    col1 = "blue", 
             ylab2 = "Protein Levels", col2 = "green", 
             plotOnly = "both", 
-            main = "", addToPrev = F, norm = F,  overTitle = "Overal Title")
+            main = "", addToPrev = F, norm = F,  
+            overTitle = "Overall Title",  plotDiff = T, absDiff = T)
 
 # Plot selected genes on one chart
 plotChoicesMulti(geneNames,  nr = 3, nc = 3, 

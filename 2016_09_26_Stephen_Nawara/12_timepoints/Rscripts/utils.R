@@ -36,10 +36,10 @@ combine <- function(df1, df2, idColmn1, idColmn2){
         tmp[, match(colnames(extras), colnames(res))]  = extras
 
         res = rbind(res, tmp)
-  }
+    }
 
-  rownames(res) = 1:nrow(res)
-  return(res)
+    rownames(res) = 1:nrow(res)
+    return(res)
 }
 
 getExpColmns <- function(dat){
@@ -93,7 +93,17 @@ plotLevels <- function(Hrs, level, lwd = 2, pch = 24, cex = 2, mult = 1,
 
 
 
-normalize <-function(x){ (x-min(x))/(max(x)-min(x)) }
+normalize <-function(x){ 
+    if(is.null(nrow(x))){
+        (x-min(x))/(max(x)-min(x)) 
+    }else{
+        t(apply(x, 1, function(r) (r-min(r))/(max(r)-min(r)) ))
+    }
+}
+
+
+
+
 
 
 plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
@@ -104,7 +114,7 @@ plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
                      ylab2 = "Protein Levels", col2 = "green", 
                      plotOnly = c("tran", "prot", "both")[3], 
                      main = "", addToPrev = FALSE, norm = FALSE, 
-                     plotDiff = T){
+                     plotDiff = T,  absDiff = T){
     if(main == ""){
         main=c(paste0(idx, "  -  ", dat$Feature[idx], "   RLS: ", round(dat$RLSMean[idx],2)),  
                dat$Feature.Systematic.Name[idx], dat$Feature.Type[idx])
@@ -114,7 +124,8 @@ plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
     protLevels = dat[idx, pExpColmns]
 
     if(plotDiff){
-        diffLevels  = abs(normalize(tranLevels) - normalize(protLevels))
+        diffLevels  = normalize(tranLevels) - normalize(protLevels)
+        if(absDiff){ diffLevels = abs(diffLevels) }
     }
 
     if(norm){ 
@@ -156,11 +167,11 @@ plotGene <- function(idx, lwd = 2, cex = 2, mult = 1,
     if(!plotTran & !plotProt){ cat(errMsg) }
 
     if(!addToPrev){
-        if(plotTran  & plotProt) { plot1(); plot2(TRUE); plot3(TRUE) }
+        if(plotTran  & plotProt) { plot1(); plot2(TRUE); if(plotDiff){ plot3(TRUE) } }
         if(plotTran  & !plotProt){ plot1() }
         if(!plotTran & plotProt) { plot2() }
     }else{
-        if(plotTran  & plotProt) { plot1(TRUE); plot2(TRUE); plot3(TRUE) }
+        if(plotTran  & plotProt) { plot1(TRUE); plot2(TRUE); if(plotDiff){ plot3(TRUE) } }
         if(plotTran  & !plotProt){ plot1(TRUE) }
         if(!plotTran & plotProt) { plot2(TRUE) }
 
@@ -181,7 +192,7 @@ plotChoices <- function(geneNames,  nr = 3, nc = 3,
                         ylab2 = "Protein Levels", col2 = "green", 
                         plotOnly = c("tran", "prot", "both")[3], 
                         main = "", addToPrev = FALSE, norm = FALSE, 
-                        overTitle = ""){
+                        overTitle = "",  plotDiff = T,  absDiff = T){
 
     PDFdim    = PDFdim*mult
 
@@ -202,7 +213,8 @@ plotChoices <- function(geneNames,  nr = 3, nc = 3,
                  ylab1 = ylab1, col1 = col1, 
                  ylab2 = ylab2, col2 = col2, 
                  plotOnly = plotOnly, 
-                 main = main, addToPrev = addToPrev, norm = norm)
+                 main = main, addToPrev = addToPrev, norm = norm, 
+                 plotDiff = plotDiff, absDiff = absDiff)
     }
     title(overTitle, outer = T, cex.main=2.5, col.main= "purple" )
     if(makePDF){ dev.off() }
@@ -304,8 +316,9 @@ plotComplexColmn <- function(colmn,  pattern,  PDFname = "Pathways.pdf"){
                     ylab2 = "Protein Levels", col2 = "green", 
                     plotOnly = "both", 
                     main = "", addToPrev = F, norm = F, 
-                    overTitle = uniqVals[i] )
+                    overTitle = uniqVals[i], plotDiff = T, absDiff = T)
         if(i %% 10 == 0){ print(i) }
     }
     dev.off()
 }
+
