@@ -5,9 +5,12 @@ inputDir = "InputData"
 plotDir  = "OutputPlots"        
 fileDir  = "OutputFiles"
 
+
 source("Rscripts/utils.R")
 
 ### Read in data ###
+
+dat2 <- read.csv("dat2_for_tracking_changes.csv", stringsAsFactors = F)
 
 
 geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
@@ -143,9 +146,34 @@ plotChoicesMulti(geneNames,  nr = 1, nc = 1,
                  main = "Choices", addToPrev = F, norm = T)
 
 
+difSum = data.frame(Feature = dat2$Feature, stringsAsFactors = F)
 
-difSum = data.frame(Feature = dat$Feature, stringsAsFactors = F)
-tpDif = t(apply(dat[,tExpColmns], 1, normalize)) - t(apply(dat[,pExpColmns], 1, normalize))
+# Columns have been reordered so get expression columns again
+expColmns  = getExpColmns(dat2)
+tExpColmns = expColmns$tExpColmns
+pExpColmns = expColmns$pExpColmns
+
+tpDif = t(apply(dat2[,tExpColmns], 1, normalize)) - t(apply(dat2[,pExpColmns], 1, normalize))
+HistData<-data.frame(dat2$Feature, tpDif,Sum=rowSums(tpDif))
+
+HistData<-HistData[order(abs(HistData$Sum)),]
+dev1<-apply(HistData[,2:13],1,function(x) coef(lm(abs(x)~Hrs))[2]) 
+HistData<-data.frame(HistData,beta=dev1)
+
+q<-quantile(HistData$beta, probs=seq(0,1,length=21),type=5)
+GeneList<-list(1:20)
+sink("GeneList.txt",append=FALSE, split=FALSE)
+
+for (i in 1:length(q)-1){
+  GeneList<-as.character(HistData[((HistData$beta >= q[i])& (HistData$beta < q[i+1])),][,1])
+  print(GeneList)
+}
+
+
+sink()
+
+
+  
 
 difSum$Sum = rowSums(abs(tpDif))
 tpDif2 = tpDif[order(difSum$Sum),]
@@ -153,15 +181,16 @@ difSum = difSum[order(difSum$Sum),]
 difSum = difSum[!is.na(difSum$Sum),]
 tpDif2 = tpDif2[!is.na(tpDif2[,1]),]
 
-dev = apply(tpDif2,1,function(x) coef(lm(abs(x)~Hrs))[2])
+dev = apply(tpDif2,1,function(x) coef(lm(abs(x)~Hrs))[2])      ### Rate of change (beta coefficient) value....
 ord.dev = order(dev)
 difSum = difSum[ord.dev,]
 tpDif2 = tpDif2[ord.dev,]
 
 
 
-pdf(paste0(plotDir, "/3rd ed Trans-Prot_abs4_Hist.pdf"), width = 12, height = 9)
-hist(dev, breaks = 20, col="brown", xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
+
+pdf(paste0(plotDir, "/2nd ed yellow histogram plots from which we need the genes.pdf"), width = 12, height = 9)
+hist(dev, breaks = 20, col="yellow", xlab = "Slope: Change Per Hour", main = c("Linear Trend in Divergence", "Between mRNA and Protein Expression Levels"))
 par(mfrow=c(3,3))
 for(i in 1:nrow(tpDif2)){
   plotLevels(Hrs, abs(tpDif2[i,]), main = c(difSum$Feature[i],"Trans-Prot Magnitude"), col="red")
@@ -171,8 +200,36 @@ for(i in 1:nrow(tpDif2)){
 dev.off()
 
 
+pdf(paste0(plotDir,"/Sahidul Histogram plot (orginal value).pdf"))
+
+par(mfrow=c(3,3))
+
+for (i in 1:nrow(dat2)){
+xlimit<-c(min(dat2[i,14:25],dat2[i,26:37]), max(dat2[i,14:25],dat2[i,26:37]))
+hist(as.matrix(dat2[i,14:25]),breaks=5,col=rgb(0,0,1,1/4),xlim=xlimit,,main=dat2$Feature[i],xlab="Expression Value")
+hist(as.matrix(dat2[i,26:37]),breaks=5,col=rgb(1,0,0,1/4),xlim=xlimit,add=T)
+}
+
+dev.off()
 
 
+
+
+pdf(paste0(plotDir,"/Sahidul Histogram plot (gene plot).pdf"))
+
+par(mfrow=c(3,3))
+
+for (i in 1:nrow(HistData)){
+  xlimit<-c(min(HistData[i,2:13]), max(HistData[i,2:13]))
+  hist(as.matrix(HistData[i,2:13]),col=rgb(1,0,0,1/4),xlim=xlimit,main=dat2$Feature[i],xlab= "Trans-Prot")
+}
+
+dev.off()
+
+
+
+
+write.csv(dat2, "dat2_for_tracking_changes.csv", row.names = F)
 
 
 

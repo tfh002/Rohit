@@ -13,7 +13,7 @@ source("Rscripts/utils.R")
 geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
 
 
-typeof(geneNames)
+
 
 
 
@@ -184,11 +184,12 @@ dev.off()
 
 
 
+write.csv(dat2$Feature, "dat2_674_gene_names.csv", row.names = F)
+colnames(dat2)
+getwd()
 
 
-
-
-
+dat2
 
 
 
