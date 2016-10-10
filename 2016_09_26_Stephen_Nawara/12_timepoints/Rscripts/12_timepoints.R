@@ -1,6 +1,6 @@
 ### Manage directories
-#setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
-setwd("C:/Users/Valued Customer/Documents/Thomas/Remote/2016_09_26_Stephen_Nawara/12_timepoints")
+setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
+#setwd("C:/Users/Valued Customer/Documents/Thomas/Remote/2016_09_26_Stephen_Nawara/12_timepoints")
 inputDir = "InputData"
 plotDir  = "OutputPlots" 
 fileDir  = "OutputFiles"
@@ -28,6 +28,7 @@ goLookUp = scan(paste0(inputDir, "/go.obo"), what = "", sep = "\t")
 
 RLS      =  read.csv(paste0(inputDir, "/yeast_RLS_data.txt"), sep = "\t",
                      stringsAsFactors = F,  header = F)
+YangZ    = read.csv("Yang_Z_scores.csv", stringsAsFactors = F)
 
 
 
