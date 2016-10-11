@@ -9,7 +9,7 @@ require(digitize)
 source("Rscripts/utils.R")
 
 #geneNames = c(dat$Feature[1:4], dat$Feature.Systematic.Name[5:9])
-geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), stringsAsFactors=F)[,]
+geneNames<-read.csv(paste0(inputDir, "/List_of_all_74_gene_names_meeting_the_definition_for_mother_enriched_as_defined_by_Yang_et_al.csv"), stringsAsFactors=F)[,]
 ### Read in data ###
 # Main data
 prot = read.csv(paste0(inputDir, "/Proteomic.csv"), stringsAsFactors=F)
@@ -28,7 +28,7 @@ goLookUp = scan(paste0(inputDir, "/go.obo"), what = "", sep = "\t")
 
 RLS      =  read.csv(paste0(inputDir, "/yeast_RLS_data.txt"), sep = "\t",
                      stringsAsFactors = F,  header = F)
-YangZ    = read.csv("Yang_Z_scores.csv", stringsAsFactors = F)
+YangZ    = read.csv(paste0(inputDir, "/Yang_Z_scores.csv"), stringsAsFactors = F)
 
 
 
@@ -80,15 +80,19 @@ RLS           = RLS[!duplicated(RLS$Name), ]
 
 RLS$RLSMean = sapply(RLS$RLS, function(x) mean(as.numeric(strsplit(x,  ",")[[1]])))
 
-
+# Fix YangZ colnames
+colnames(YangZ)[colnames(YangZ) %in% c("X130min", "X170min")] = c("Min130", "Min170")
+YangZ = YangZ[YangZ$Name != "", ]
 
 # Combine the various data sources into one data frame
-dat = combine(tran, prot,      "ORF",     "ORF")
-dat = combine(dat,  gene,      "ORF",     "Feature.Systematic.Name")
-dat = combine(dat,  uniqPaths, "Feature", "Gene")
-dat = combine(dat,  lProbs,    "Feature", "CommonName")
-dat = combine(dat,  geneGO,    "Feature", "Gene")
-dat = combine(dat,  RLS,       "Feature", "Name")
+dat = combine(tran, prot,      "ORF",                      "ORF")
+dat = combine(dat,  gene,      "ORF",                      "Feature.Systematic.Name")
+dat = combine(dat,  uniqPaths, "Feature",                  "Gene")
+dat = combine(dat,  lProbs,    "Feature",                  "CommonName")
+dat = combine(dat,  geneGO,    "Feature",                  "Gene")
+dat = combine(dat,  RLS,       "Feature",                  "Name")
+#dat = combine(dat,  YangZ,     "Feature.Systematic.Name",  "Orf")
+dat = combine(dat,  YangZ,     "Feature",                   "Name")
 
 
 # Remove undesirable rows/columns
@@ -131,9 +135,9 @@ pExpColmns = expColmns$pExpColmns
 
 ## Make the plots
 ###### This gets us the 674 genes for which we have all data. 
-geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) & 
-                          !is.na(dat[,pExpColmns[1]]) &
-                          !is.na(dat$RLSMean)]
+#geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) & 
+#                          !is.na(dat[,pExpColmns[1]]) &
+ #                         !is.na(dat$RLSMean)]
 
 # Sort by RLS mean
 dat = dat[order(dat$RLSMean, decreasing = T),]
