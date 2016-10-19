@@ -1,0 +1,208 @@
+======== Cluster-0 =========
+character(0)
+
+ 
+ 
+======== Cluster-1 =========
+[1] "CNA1" "LSM1"
+
+ 
+ 
+======== Cluster-2 =========
+[1] "MCT1"  "RPS6A" "DPH2"  "KEL1" 
+
+ 
+ 
+======== Cluster-3 =========
+ [1] "BPT1"    "AAT2"    "APL3"    "LSM12"   "NUP120"  "RTS1"   
+ [7] "CHS5"    "CAF16"   "YNR040W" "COG6"   
+
+ 
+ 
+======== Cluster-4 =========
+ [1] "YKL069W" "TDH1"    "EDC3"    "PUT2"    "YGR210C" "GUP1"   
+ [7] "NAM7"    "SLC1"    "TUB3"    "PET123" 
+
+ 
+ 
+======== Cluster-5 =========
+ [1] "ATP3"    "LYS20"   "ATP15"   "XPT1"    "YGR012W" "MNN2"   
+ [7] "SNF4"    "HHT1"    "SVL3"    "URA5"    "TOM70"   "TRS33"  
+[13] "REE1"    "MET7"    "ARG1"    "YJU3"    "FAA3"    "NNT1"   
+[19] "CPA1"    "UTR4"    "KEL3"    "RRP6"   
+
+ 
+ 
+======== Cluster-6 =========
+ [1] "GND1"    "SRB2"    "GPD2"    "YCK2"    "PHO85"   "ADO1"   
+ [7] "YJR111C" "GSF2"    "GET3"    "MRPL17"  "DLD2"    "PYC2"   
+[13] "YJL055W" "GCV2"    "FAR8"    "TGL1"    "ARP8"    "SYH1"   
+[19] "TOR1"    "UBP14"   "RKM1"    "MYO5"    "TIP41"   "RPL16B" 
+[25] "GGC1"    "APL4"    "IDH2"    "TRM82"   "APL1"    "PRE9"   
+[31] "IKI3"    "PRS5"    "VTC3"    "DDP1"    "PPH22"   "SAM2"   
+[37] "HPT1"   
+
+ 
+ 
+======== Cluster-7 =========
+ [1] "BNI4"      "SSH1"      "SUR7"      "RTN1"      "APL2"     
+ [6] "RPL31A"    "EFT1"      "AHP1"      "IMD4"      "VTC2"     
+[11] "MCK1"      "FET5"      "TSA1"      "STO1"      "FMP41"    
+[16] "CAJ1"      "RPB4"      "YAP1"      "NUP133"    "TRP5"     
+[21] "RPE1"      "DFM1"      "YUH1"      "HOG1"      "ALG12"    
+[26] "NUP84"     "WHI2"      "NUP188"    "IVY1"      "CPA2"     
+[31] "NUT1"      "YCF1"      "SNF1"      "FUM1"      "APS3"     
+[36] "QDR2"      "VIP1"      "MON2"      "MXR2"      "AIM45"    
+[41] "ADD66"     "PHO88"     "YBL036C"   "YKL033W-A" "SCP160"   
+[46] "HOM2"      "CRZ1"      "NUP53"     "HAL5"      "MGM101"   
+[51] "PBY1"      "DAL3"      "MDL2"      "SPA2"      "FCY2"     
+[56] "VNX1"      "SVF1"      "AIM10"     "FMC1"      "BEM4"     
+[61] "LAA1"      "YGR111W"   "RPL20A"   
+
+ 
+ 
+======== Cluster-8 =========
+ [1] "ISC1"    "ALE1"    "MGR3"    "CLU1"    "MNN10"   "OSH3"   
+ [7] "TPD3"    "URA1"    "DID2"    "HOM3"    "AIM9"    "HIS1"   
+[13] "GON7"    "ARO3"    "ADH4"    "POS5"    "CHC1"    "LYS2"   
+[19] "MRPL7"   "PTH2"    "PBP4"    "ATP1"    "ODC2"    "IOC2"   
+[25] "HIS3"    "APL5"    "NBP2"    "MET18"   "HIS5"    "YDR262W"
+[31] "LSB3"    "HOM6"    "GCN1"    "STE24"   "FUN12"   "STE23"  
+[37] "YNR029C" "FAA4"    "URE2"    "VMA5"    "SSE1"    "KTR3"   
+[43] "TCB2"    "AVT7"    "YNL010W" "SEY1"    "TKL1"    "COQ9"   
+[49] "CTP1"    "CCC1"    "AAP1"    "ATP12"   "GDH1"    "PEX19"  
+[55] "RMT2"    "PEP5"    "SEC28"   "TMA108"  "HNT1"    "MET6"   
+[61] "PTC3"    "NMA111"  "IAH1"    "GLR1"    "SMY1"    "LIA1"   
+[67] "FMP52"  
+
+ 
+ 
+======== Cluster-9 =========
+ [1] "ARG4"    "GSH2"    "BNA3"    "URA8"    "VAC8"    "CEX1"   
+ [7] "YBT1"    "AMD1"    "MSS116"  "YFR006W" "UME1"    "YHB1"   
+[13] "HMG2"    "YMR027W" "SCS7"    "ECM25"   "COQ5"    "NGG1"   
+[19] "PEP3"    "BNA4"    "URA2"    "STE4"    "ADE17"   "LRG1"   
+[25] "PET10"   "SDS23"   "YKR018C" "SNO1"    "SST2"    "ERG4"   
+[31] "MRH1"    "PUT1"    "CKA2"    "PDR16"   "TEF4"    "PRD1"   
+[37] "GGA2"    "MRPS9"   "THI6"    "HIS4"    "PUF4"    "DUS3"   
+[43] "YCR051W" "AKR1"    "BEM2"    "STE2"    "SAC6"    "MET3"   
+[49] "IDP1"    "UBP1"    "YRO2"    "THR4"    "CWH41"   "YLR225C"
+[55] "SRV2"    "GLT1"    "ECM30"   "PST1"    "ASG1"    "ADE16"  
+[61] "LAC1"    "HMG1"    "TIM21"  
+
+ 
+ 
+======== Cluster-10 =========
+ [1] "PFK1"    "GCN20"   "ECM14"   "GAT1"    "SPF1"    "FSH1"   
+ [7] "DJP1"    "PRO1"    "SSP120"  "POR1"    "PDB1"    "GLO3"   
+[13] "RBS1"    "RNR3"    "PNP1"    "POP2"    "TDH3"    "NUP170" 
+[19] "PDX1"    "ORM1"    "ADE2"    "CKA1"    "OLA1"    "CCS1"   
+[25] "VMA8"    "SIR3"    "KRE6"    "VAN1"    "YJR142W" "DPL1"   
+[31] "TRX2"    "ADE6"    "PDA1"    "MTR10"   "PHO86"   "FPR1"   
+[37] "ADE8"    "KTR1"    "VPS1"    "FAA1"    "ARO1"    "PAM17"  
+[43] "PAT1"    "PHO13"   "RSR1"    "UFD4"    "ALO1"    "TED1"   
+[49] "PEX25"   "IMH1"    "SAC1"    "TAN1"    "YTA7"    "YIP5"   
+[55] "ANT1"    "OPI10"   "PFK2"    "PTM1"    "BNA1"    "DOA1"   
+[61] "GCV1"    "YOL057W" "MRI1"    "MRPL35"  "BAR1"    "AIP1"   
+[67] "LHS1"    "ENO1"    "PDX3"    "PPA2"    "CDC73"   "CPR1"   
+[73] "STE20"   "VMA10"   "RGD2"    "MNN1"    "YGR125W" "CRN1"   
+[79] "YME1"    "LHP1"    "RPL34B"  "RGA2"    "CRH1"    "OTU1"   
+[85] "ADH3"    "GTB1"    "KAP114"  "AAT1"    "REH1"   
+
+ 
+ 
+======== Cluster-11 =========
+ [1] "ERG6"    "DOT5"    "IGO1"    "TAF14"   "MRPS35"  "SPE3"   
+ [7] "TIF1"    "BCH1"    "NPT1"    "LPD1"    "ZEO1"    "SNL1"   
+[13] "YER156C" "AVL9"    "TPI1"    "RHO5"    "CPR5"    "ATP2"   
+[19] "LYS4"    "ADH1"    "ERG5"    "GLY1"    "PUB1"    "TGL3"   
+[25] "IES3"    "GRH1"    "IML2"    "PDI1"    "SUR2"    "GRX5"   
+[31] "ADE12"   "TAL1"    "BMH1"    "GAP1"    "ZUO1"    "RPL1B"  
+[37] "YPR1"    "LYS12"   "PAC10"   "DPH1"    "PTC7"    "MTD1"   
+[43] "TRP2"    "ERV25"   "DLD3"    "CUE5"    "DAP2"    "MET22"  
+[49] "PBS2"    "YGR017W" "YTA12"   "SBP1"    "ABP1"    "ASN2"   
+[55] "EHT1"    "UBP6"    "COG1"    "ADE3"    "HHO1"    "CSR1"   
+[61] "TDH2"    "PHO91"   "RSN1"    "MET10"   "POM152"  "ERV41"  
+[67] "SLA2"    "SPE2"    "LYS21"   "EMP47"   "SXM1"   
+
+ 
+ 
+======== Cluster-12 =========
+ [1] "YDL144C" "MAP1"    "VTC4"    "APE2"    "YIP3"    "MET2"   
+ [7] "APL6"    "GCS1"    "CAM1"    "ADK1"    "PSD1"    "SHM1"   
+[13] "GIP3"    "MRPL13"  "DSD1"    "LEO1"    "CYS4"    "CBC2"   
+[19] "KAR2"    "GSH1"    "PSP2"    "SKI8"    "RPL23A"  "YMR099C"
+[25] "YER134C" "ERG2"    "HAT2"    "SER1"    "MTC1"    "VPS4"   
+[31] "RPD3"    "UBP3"    "PAA1"    "VID22"   "TOM71"   "DAL2"   
+[37] "TCB3"    "MAE1"    "SSO1"    "SER3"    "YGR054W" "BGL2"   
+[43] "CAN1"    "RAD27"   "MTF2"    "YNR021W" "TVP18"   "TWF1"   
+[49] "ENT3"    "ARO8"    "MRPS28"  "MPD1"    "THR1"    "MRPL15" 
+[55] "VMA13"   "APT1"    "VPH1"    "HSM3"    "PCT1"    "ATP4"   
+[61] "AVT1"    "SCW4"    "RTG2"    "ASC1"    "SAM1"   
+
+ 
+ 
+======== Cluster-13 =========
+ [1] "ARG3"    "CAF40"   "ARF2"    "YIM1"    "ILV6"    "MRP21"  
+ [7] "HCH1"    "GRX3"    "MLP1"    "TOM1"    "LEU4"    "NUP100" 
+[13] "PGM1"    "PEX11"   "PMU1"    "CMK2"    "BUD20"   "FRA1"   
+[19] "SHM2"    "SHE10"   "WTM1"    "YGL039W" "VPS28"   "BRE1"   
+[25] "CDC10"   "SSM4"    "NIT3"    "LYS1"    "RTT103"  "SIT4"   
+[31] "SER33"   "GSC2"    "BLM10"   "RNR4"    "MSH6"    "ARO2"   
+[37] "PMT1"    "FSH3"    "PHO84"   "HBS1"    "LEA1"    "BDF1"   
+[43] "DUG2"    "SKY1"    "TIF3"    "MNN5"    "PRS3"   
+
+ 
+ 
+======== Cluster-14 =========
+ [1] "MGR1"    "CYS3"    "VTA1"    "YCR090C" "DPB4"    "ECM32"  
+ [7] "ARC1"    "YHR045W" "RPL6A"   "YLR179C" "TRP4"    "ARC18"  
+[13] "OST3"    "ERG3"    "VMA2"    "GRX1"    "ZRT3"    "SKI2"   
+[19] "YDL086W" "MGM1"    "SLA1"    "ELP2"    "TUF1"    "RNR1"   
+[25] "HSP30"   "MET12"   "RAS2"    "PRO2"    "ZRC1"    "PEP8"   
+[31] "YOP1"    "ECM33"   "KES1"    "TPO1"    "ELO1"    "NOP6"   
+[37] "EMP70"  
+
+ 
+ 
+======== Cluster-15 =========
+ [1] "MDM38"   "HUL5"    "CHO2"    "APT2"    "YLR118C" "RKR1"   
+ [7] "TMA46"   "DIP5"    "CAR1"    "ARL1"    "RSC2"    "NUP2"   
+[13] "BNA6"    "YPL225W" "CGI121"  "VPS27"   "RPL38"   "BRE5"   
+[19] "YIR035C" "VMA6"    "MKT1"    "MNN11"   "PHB2"    "MIR1"   
+[25] "HOS3"    "DPH5"    "MSN5"    "RIB4"    "RPL37B"  "PPN1"   
+[31] "SFA1"    "STV1"    "PLB2"    "UBR1"    "YHR112C" "GRS1"   
+[37] "KRE2"    "LCB4"    "HHF1"   
+
+ 
+ 
+======== Cluster-16 =========
+ [1] "CBR1"   "MAF1"   "PMR1"   "RPT3"   "HOC1"   "AFG3"   "ADH6"  
+ [8] "ASF1"   "LAP3"   "PIN4"   "RPL19B" "SGM1"   "ANB1"   "RAI1"  
+[15] "MSC6"   "ATP11"  "MKC7"   "AIM7"   "ASN1"  
+
+ 
+ 
+======== Cluster-17 =========
+ [1] "HMF1"    "ROT2"    "YKE2"    "VPS60"   "SUM1"    "CPR3"   
+ [7] "NOT3"    "SFT2"    "ATP5"    "TIM13"   "ARO4"    "ARO7"   
+[13] "YPT31"   "EGD1"    "MET13"   "PSY2"    "MET16"   "YOR283W"
+[19] "RIM1"    "DUN1"    "ANP1"   
+
+ 
+ 
+======== Cluster-18 =========
+[1] "YOR131C" "YCK1"    "BZZ1"   
+
+ 
+ 
+======== Cluster-19 =========
+[1] "HEM14" "MSC7"  "TMA20" "HEK2" 
+
+ 
+ 
+======== Cluster-20 =========
+character(0)
+
+ 
+ 

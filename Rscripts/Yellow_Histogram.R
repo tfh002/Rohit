@@ -1,6 +1,6 @@
-### Manage directories
 setwd("D:/Tang/Rohit/2016_09_26_Stephen_Nawara/12_timepoints")
-#setwd("C:/Users/Valued Customer/Documents/Thomas/Remote/2016_09_26_Stephen_Nawara/12_timepoints")
+### Manage directories
+#setwd("~/Thomas/12_timepoints")
 inputDir = "InputData"
 plotDir  = "OutputPlots" 
 fileDir  = "OutputFiles"
@@ -15,7 +15,6 @@ geneNames<-read.csv(paste0(inputDir, "/InTransANDinProt_GeneNamesOnly.csv"), str
 prot = read.csv(paste0(inputDir, "/Proteomic.csv"), stringsAsFactors=F)
 tran = read.csv(paste0(inputDir, "/Transcriptomic.csv"), stringsAsFactors=F)
 
-
 # Additional Info
 gene     = read.csv(paste0(inputDir, "/AllChr.csv"),  stringsAsFactors = F)
 path     = read.csv(paste0(inputDir, "/BiochemicalPathways.tab"),
@@ -28,7 +27,6 @@ goLookUp = scan(paste0(inputDir, "/go.obo"), what = "", sep = "\t")
 
 RLS      =  read.csv(paste0(inputDir, "/yeast_RLS_data.txt"), sep = "\t",
                      stringsAsFactors = F,  header = F)
-YangZ    = read.csv(paste0(inputDir, "/Yang_Z_scores.csv"), stringsAsFactors = F)
 
 
 
@@ -71,7 +69,7 @@ geneGO = aggregate(GoTerm~Gene, goYeast, function(x)
   gsub("GO:", "", paste(x, collapse = "; ")))
 
 # Convert the GO obo file to R list
-#goLookUp = oboToList(goLookUp)
+goLookUp = oboToList(goLookUp)
 
 # Give RLS data colnames, remove duplicates (possibly combine duplicates later)
 # Also extract means as a summary stat (maybe do more with this later)
@@ -80,19 +78,15 @@ RLS           = RLS[!duplicated(RLS$Name), ]
 
 RLS$RLSMean = sapply(RLS$RLS, function(x) mean(as.numeric(strsplit(x,  ",")[[1]])))
 
-# Fix YangZ colnames
-colnames(YangZ)[colnames(YangZ) %in% c("X130min", "X170min")] = c("Min130", "Min170")
-YangZ = YangZ[YangZ$Name != "", ]
+
 
 # Combine the various data sources into one data frame
-dat = combine(tran, prot,      "ORF",                      "ORF")
-dat = combine(dat,  gene,      "ORF",                      "Feature.Systematic.Name")
-dat = combine(dat,  uniqPaths, "Feature",                  "Gene")
-dat = combine(dat,  lProbs,    "Feature",                  "CommonName")
-dat = combine(dat,  geneGO,    "Feature",                  "Gene")
-dat = combine(dat,  RLS,       "Feature",                  "Name")
-#dat = combine(dat,  YangZ,     "Feature.Systematic.Name",  "Orf")
-dat = combine(dat,  YangZ,     "Feature",                   "Name")
+dat = combine(tran, prot,      "ORF",     "ORF")
+dat = combine(dat,  gene,      "ORF",     "Feature.Systematic.Name")
+dat = combine(dat,  uniqPaths, "Feature", "Gene")
+dat = combine(dat,  lProbs,    "Feature", "CommonName")
+dat = combine(dat,  geneGO,    "Feature", "Gene")
+dat = combine(dat,  RLS,       "Feature", "Name")
 
 
 # Remove undesirable rows/columns
@@ -106,14 +100,6 @@ Hrs        = expColmns$Hrs
 # Remove rows without any expression data
 remRows = apply(dat[, c(tExpColmns, pExpColmns)], 1, function(x) all(is.na(x)))
 dat     = dat[!remRows, ]
-
-# Calculate the slopes of divergence 
-dat$DivergenceSlopes = NA
-Divergence = t(abs(apply(dat[,tExpColmns], 1, normalize) - 
-                     apply(dat[,pExpColmns], 1, normalize)))
-NotNA = !is.na(Divergence[,1])
-dat$DivergenceSlopes[NotNA] = apply(Divergence[NotNA,], 1, 
-                                    function(x) coef(lm(x~Hrs))[2]) 
 
 
 # Reorder columns so that expression data is last
@@ -134,24 +120,13 @@ pExpColmns = expColmns$pExpColmns
 
 
 ## Make the plots
-###### This gets us the 674 genes for which we have all data. 
-#geneNames = dat$Feature[!is.na(dat[,tExpColmns[1]]) & 
-#                          !is.na(dat[,pExpColmns[1]]) &
- #                         !is.na(dat$RLSMean)]
 
-# Sort by RLS mean
-#dat = dat[order(dat$RLSMean, decreasing = T),]
-
-# Putting only 674 genes for which we have everything from geneNames into dat
-#dat = dat[dat$Feature %in% geneNames$Name,]
-dat = dat[clean(dat$Feature) %in% clean(geneNames), ]
-rownames(dat) = 1:nrow(dat)
 
 
 # Plot panels of selected genes
 plotChoices(geneNames,  nr = 3, nc = 3, 
             makePDF = T, PDFdim = c(12, 9), 
-            PDFname = "singlePlot.pdf",  mult = 1, 
+            PDFname = "levels.pdf",  mult = 1, 
             lwd = 2,                  cex = 2, 
             cex.main = 2, mar = c(5.1, 4.5, 6.0, 5.1), 
             cex.x.axis = 0.8,         cex.y.axis = 2, 
@@ -159,13 +134,12 @@ plotChoices(geneNames,  nr = 3, nc = 3,
             ylab1 = "mRNA Levels",    col1 = "blue", 
             ylab2 = "Protein Levels", col2 = "green", 
             plotOnly = "both", 
-            main = "", addToPrev = F, norm = F,  
-            overTitle = "Overall Title",  plotDiff = T, absDiff = T)
+            main = "", addToPrev = F, norm = F,  overTitle = "Overal Title")
 
 # Plot selected genes on one chart
 plotChoicesMulti(geneNames,  nr = 3, nc = 3, 
                  makePDF = T, PDFdim = c(12, 9), 
-                 PDFname = "multipePlot.pdf",  mult = 1, 
+                 PDFname = "levels2.pdf",  mult = 1, 
                  lwd = 2,                  cex = 2, 
                  cex.main = 2, mar = c(5.1, 4.5, 6.0, 5.1), 
                  cex.x.axis = 0.8,         cex.y.axis = 2, 
@@ -175,75 +149,127 @@ plotChoicesMulti(geneNames,  nr = 3, nc = 3,
                  plotOnly = "tran", 
                  main = "Choices", addToPrev = F, norm = T, overTitle = "Overall Title")
 
-plotComplexColmn("Pathways", "; ", "Pathways674.pdf")
-
+plotComplexColmn("Pathways", "; ", "Pathways.pdf")
 
 #plotComplexColmn("GoTerm", "; ", "GoTerm.pdf")
-# Normalizing 1114 genes and proteins to themselves and subsetting them for GEDI
-# Before loading it into GEDI saved txt file must be opened in Excel and resaved. 
-datNorm = dat
-datNorm[,tExpColmns] = normalize(datNorm[,tExpColmns])
-datNorm[,pExpColmns] = normalize(datNorm[,pExpColmns])
 
-GEDI = cbind(datNorm$Feature, datNorm$Feature, datNorm[,c(tExpColmns, pExpColmns)], stringsAsFactors = F)
+# Analysis
 
-R1 = c("}Dynamic", "DESC", "Hour", nrow(datNorm), "Janssens2015", rep("", length(tExpColmns)*2-3))
-R2 = c("}Trans", "DESC", Hrs, rep("-1", length(tExpColmns)))
-R3 = c("}Prot", "DESC", rep("-1", length(pExpColmns)), Hrs)
 
-GEDI = rbind(R1, R2, R3, GEDI)
-colnames(GEDI) = NULL
-write.table(GEDI, paste0(fileDir, "/GEDI1114.txt"), row.names = F, col.names = F, sep = "\t")
+dat2 = dat[!is.na(dat[,tExpColmns[1]]) & !is.na(dat[,pExpColmns[1]]) & !is.na(dat$RLSMean), ]
+#dat2 = dat[!is.na(dat[,tExpColmns[1]]) & !is.na(dat[,pExpColmns[1]]),] 
+
+
+# Calculate slope of the divergence: 
+
+dat2$Slopes = sapply(1:nrow(dat2), function(i)
+  coef(lm(as.numeric(abs(normalize(dat2[i,tExpColmns])-normalize(dat2[i,pExpColmns])))~Hrs))[2])
 
 
 
 
+length(H$breaks)
+dat$Feature[which(dat2$Slopes>0.015)]
 
 
+pdf("DivergenceSlopeHistogram.pdf", width = 45, height = 45)
+par(mar=c(10.1,8.1,8.1,2.1))
+H = hist(dat2$Slopes, breaks = 20, col="yellow", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", ylim = c(0,120))
+text(x=H$mids, y=H$counts, labels = H$counts, pos = 3, cex = 3, col = "red", font = 2)
+axis(side = 1, at = H$mids, labels = H$mids, cex.axis = 5, line = 10)
+axis(side = 2, at = axTicks(2), labels = axTicks(2))
+mtext("Slope of Divergence per Hour", side = 1)
+mtext("Number of Genes", side = 2)
+title(c("Linear Trend in Divergence between mRNA and Protein Expression Levels"), cex.main = 5, font = 2)
 
 
-# Getting proportions of genes in each pathway for each quantile of RLS
-Quants = quantile(dat$RLSMean, probs = 1 - c(0.05, 0.1, 0.2, 0.3))
-
-colmn = "Pathways"
-pattern = "; "
-uniqVals = unique(unlist(strsplit(dat[, colmn], pattern)))
-uniqVals = uniqVals[!is.na(uniqVals)]
-PathwayRLS = as.data.frame(matrix(nrow=length(uniqVals), ncol = 6), stringsAsFactors = F)
-colnames(PathwayRLS) = c("Pathway", "Genes", "95%", "90%", "80%", "70%")
-for(i in 1:length(uniqVals)){
-  sub = dat[grep(uniqVals[i], dat[, colmn]), ]
-  geneNames = sub$Feature
-  RLS = sub$RLSMean
-  Proport = sapply(Quants, function(x) length(which(RLS>x))/length(RLS))
-  PathwayRLS[i,] = c(uniqVals[i], paste(geneNames, collapse = ", "), Proport)
+Quants = quantile(dat2$RLSMean, probs = 1 - c(0.05, 0.1, 0.2, 0.3))
+for (i in 1:(length(H$breaks)-1)){
+  InBin = H$breaks[i]<=dat2$Slopes & H$breaks[i+1]>dat2$Slopes
+  lbls = dat2$Feature[InBin]
+  RLS = dat2$RLSMean[InBin]
+  Proport = round(sapply(Quants, function(x) length(which(RLS>x))/length(RLS)),2)
+  text(H$mids[i], H$counts[i]*4/5, pos = 1, offset = 0, col="blue", font = 2, cex = 1.5, labels = paste(lbls, collapse = "\n"))
+  text(H$mids[i],  H$counts[i], pos = 3, offset = 10, col= "darkgreen", cex = 2, font = 2, labels = paste(paste(names(Proport), Proport, sep = ": ")
+, collapse ="\n" ))
+  text(H$mids[i], H$counts[i], pos = 3, offset = 20, col = "orange", cex = 2, font = 2, labels = paste(length(H$counts)/674, collapse = "\n"))
+  
 }
-ToNum = grep("%", colnames(PathwayRLS))
-PathwayRLS[,ToNum] = sapply(PathwayRLS[,ToNum],as.numeric)
-write.csv(PathwayRLS, paste0(fileDir,"/PathwayRLS.csv"), row.names = F)
+dev.off()
+write.csv(dat2, "dat2Hist.csv", row.names = F)
+
+which(RLS<Quants[1])
 
 
-# Compare relatve expression
-
-p_grt_t = t(apply(dat[, tExpColmns], 1, normalize)) < t(apply(dat[, pExpColmns],1, normalize))
-any_p_grt_t = apply(p_grt_t[,3:10], 1, any)
-dat[which(!any_p_grt_t),]
-dat$Feature[which(!any_p_grt_t)]
-
-length(which(any_p_grt_t))
+#dat2[InBin, c("Feature", "Slopes")]
 
 
-p_grt_t = t(apply(dat[1:674, tExpColmns], 1, normalize)) < t(apply(dat[1:674, pExpColmns],1, normalize))
-any_p_grt_t = apply(p_grt_t[,3:10], 1, any)
-dat[which(!any_p_grt_t),]
-dat$Feature[which(!any_p_grt_t)]
+Sp = sapply(1:length(tExpColmns), function(i)
+  cor(dat2[,tExpColmns[i]],dat2[,pExpColmns[i]], method = "spearman"))
 
-length(which(any_p_grt_t))
-plotChoices(dat$Feature[which(!any_p_grt_t)], makePDF = T, PDFname = "Not.pdf",
-            overTitle = "9 out of 136 where P never > T at TP 3 to 10")
+plot(Hrs, Sp, ylim = c(0.6, 0.8))
+abline(h=c(0.75, 0.7, 0.73), lty=2)
+
+# Digitizing Janssens plot
+if(FALSE){
+  fName = paste0(inputDir, "/Janssens_uncoupling_correlation.png")
+  cal=ReadAndCal(fName)
+  pts = DigitData()
+  JanssenSp = Calibrate(pts, cal, x1=6, x2 = 72, y1 = 0.65, y2 = 0.8)
+  JanssenSp
+  JanssenSp$x = Hrs
+  JanssenSp
+  
+  Comp = cbind(JanssenSp, Sp)
+  colnames(Comp) = c("Hrs", "JanssenSp", "Sp")
+}
 
 
-plotChoices(dat$Feature[which(any_p_grt_t)], makePDF = T, PDFname = "Opposite.pdf",
-            overTitle = "9 out of 136 where P never > T at TP 3 to 10")
+dat2$CorSP = sapply(1:nrow(dat2), function(i)
+  cor(as.numeric(dat2[i,tExpColmns]), as.numeric(dat2[i,pExpColmns]), method = "spearman"))
 
 
+
+dat3 = dat2[order(dat2$CorSP, decreasing = T),]
+dim(dat3)
+rownames(dat3)= 1:nrow(dat3)
+head(dat3)
+plot(as.numeric(dat3$RLSMean), as.numeric(dat3$CorSP))
+head(dat3)
+dat3[1,]
+plot(dat3[1,tExpColmns], dat3[1, pExpColmns])
+dat3[1:5,]
+tail(dat3)
+dat4 = dat3[,c("Feature", "RLSMean", "CorSP")]
+colnames(dat3)
+head(dat4)
+
+plotGene(1)
+dim(dat4)
+dat3
+plotChoices("UBP1", nr=1, nc=1)
+tail(dat3)
+which.min(abs(dat3$CorSP))
+dat3$Feature[317]
+CorSP_0 = dat4[order(abs(dat3$CorSP)),]
+
+head(CorSP_0,100)
+mean(dat3$RLSMean)
+mean(dat3$RLSMean[1:100])
+mean(rev(dat3$RLSMean)[1:100])
+mean(CorSP_0$RLSMean[1:100])
+tail(dat4,100)
+head(dat4,100)
+head(dat3)
+
+head(dat3)
+dat3$Slopes = sapply(1:nrow(dat3), function(i)
+  coef(lm(as.numeric(abs(normalize(dat3[i,tExpColmns])-normalize(dat3[i,pExpColmns])))~Hrs))[2])
+head(dat3)
+dat3 = dat3[order(dat3$Slopes, decreasing = T),]
+head(dat3)
+require(rgl)
+plot3d(dat3$RLSMean, dat3$CorSP, dat3$Slopes)
+dat4
+head(dat4)
+dat4[dat4$RLSMean>30, ]

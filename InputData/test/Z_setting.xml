@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE preferences SYSTEM "http://java.sun.com/dtd/preferences.dtd">
+<preferences EXTERNAL_XML_VERSION="1.0">
+  <root type="user">
+    <map/>
+    <node name="org">
+      <map/>
+      <node name="childrenshospital">
+        <map/>
+        <node name="gedi">
+          <map/>
+          <node name="model">
+            <map>
+              <entry key="default_file" value="C:\Users\tfh4\Desktop\AGING WORK_ANKUSH_THOMAS\DIFFERENTIAL EXPRESSION_FILES\CR_time_course.RMA - Group 1.csv"/>
+              <entry key="x_grid" value="26"/>
+              <entry key="y_grid" value="25"/>
+              <entry key="som_train_num1" value="20"/>
+              <entry key="som_train_num2" value="80"/>
+              <entry key="som_train_quality" value="Maximum"/>
+              <entry key="neighborhood" value="4.0"/>
+              <entry key="beta" value="0.5"/>
+              <entry key="conscience" value="3.0"/>
+              <entry key="nbh_block" value="4"/>
+              <entry key="neighborhood2" value="1.0"/>
+              <entry key="beta2" value="0.05"/>
+              <entry key="conscience2" value="3.0"/>
+              <entry key="nbh_block2" value="2"/>
+              <entry key="clip" value="0.001"/>
+              <entry key="random_seed" value="1"/>
+              <entry key="init_method" value="Linear Initilization"/>
+              <entry key="distance_metrics" value="0"/>
+              <entry key="color_cut_off_ratio" value="1.0"/>
+              <entry key="tile_size" value="10"/>
+              <entry key="seperator_size" value="0"/>
+              <entry key="max_map_width" value="240"/>
+              <entry key="cross_size" value="None"/>
+              <entry key="frame_number" value="10"/>
+              <entry key="total_movie_Time" value="2.0"/>
+              <entry key="normalize_weight_vector" value="false"/>
+              <entry key="debug" value="false"/>
+              <entry key="root_dir" value="C:\Program Files\gedi"/>
+              <entry key="default_input_dir" value="C:\Program Files\gedi\InputData"/>
+              <entry key="default_output_dir" value="C:\Program Files\gedi\OutputData"/>
+            </map>
+          </node>
+        </node>
+      </node>
+    </node>
+  </root>
+</preferences>
