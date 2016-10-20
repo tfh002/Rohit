@@ -140,12 +140,14 @@ pExpColmns = expColmns$pExpColmns
  #                         !is.na(dat$RLSMean)]
 
 # Sort by RLS mean
-#dat = dat[order(dat$RLSMean, decreasing = T),]
+dat = dat[order(dat$RLSMean, decreasing = T),]
 
 # Putting only 674 genes for which we have everything from geneNames into dat
 #dat = dat[dat$Feature %in% geneNames$Name,]
 dat = dat[clean(dat$Feature) %in% clean(geneNames), ]
 rownames(dat) = 1:nrow(dat)
+
+geneNames = geneNames[order(match(clean(geneNames), clean(dat$Feature)))]
 
 
 # Plot panels of selected genes
