@@ -1,12 +1,15 @@
 TPdat = dat
 Tdat = dat
+
 head(TPdat)
 head(Tdat)
 colnames(Tdat)
+
 Tdat<-Tdat[,-c(3:11,(ncol(Tdat)-1))]
 Tdat<-Tdat
 colnames(Tdat)
 dim(Tdat)
+
 Tdat<-Tdat[!is.na(Tdat$t7.8),]
 head(Tdat)
 Tdat<-Tdat[!is.na(Tdat$buds),]
